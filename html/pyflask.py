@@ -31,7 +31,7 @@ def signUp():
 	try:
 		x.execute(new_user__query)
 		conn.commit()
-		return redirect('http://127.0.0.1:5000/')
+		return redirect('http://ec2-18-220-2-41.us-east-2.compute.amazonaws.com/')
 	except Exception:
 		print ("\n User wasn't add \n") #User probably already exists, will deal with this later
 		traceback.print_exc()
