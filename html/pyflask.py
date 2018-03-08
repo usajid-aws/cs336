@@ -49,7 +49,8 @@ def login():
 	x.execute(login_query)
 	data_line = x.fetchone()
 	if(data_line is not None and data_line[1] == index_username and data_line[2] == index_password):
-		return "<h1>hello world</h1>"
+		user = data_line[0]
+		return render_template("welcome.html", user=user)
 	return "<h2> unsuccessful </h2>"
 	
 	
