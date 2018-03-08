@@ -61,10 +61,7 @@ x = conn.cursor()
 
 
 
-file_name = "barnesandnoble_scifi.csv"
-f = open(file_name, "w")
-header = "Title, Author, ISBN, Genre, Price, Site"
-f.write(header)
+
 miss = 0
 hit = 0
 
