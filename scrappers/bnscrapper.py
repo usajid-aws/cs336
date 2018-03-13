@@ -6,18 +6,15 @@
 
 @Author -> Usama Sajid
 '''
-import traceback
 import bs4
-import sys
-import urllib
-import MySQLdb
+import threading, sys, time,urllib,MySQLdb,traceback
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 
 #parses side page to get ISBN number
-def getISBN(i, x):
+def getISBN(req,i, x):
 	   
-	    site = uReq('https://www.barnesandnoble.com/b/books/history/_/N-1fZ29Z8q8Z11km?Nrpp=20&Ns=P_Sales_Rank&page=' + str(x))
+	    site = uReq(str(req)+ str(x))
 	    page_html = site.read()
 	    site.close()
 	    page_soup = soup(page_html, "html.parser")
@@ -31,9 +28,9 @@ def getISBN(i, x):
 	    ISBN_NUM = product_detail.find('tr')
 	    return ISBN_NUM.text
 
-def getPublisher(i, x):
+def getPublisher(req,i, x):
 	   
-	    site = uReq('https://www.barnesandnoble.com/b/books/history/_/N-1fZ29Z8q8Z11km?Nrpp=20&Ns=P_Sales_Rank&page=' + str(x))
+	    site = uReq(str(req) + str(x))
 	    page_html = site.read()
 	    site.close()
 	    page_soup = soup(page_html, "html.parser")
@@ -59,52 +56,53 @@ conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com'
 x = conn.cursor()
 #x.execute(new_table_query)
 
+def threadInsert(url, genre_type, t_name):
+	miss = 0
+	hit = 0
+	for y in range(1,6):
+		site = uReq(str(url) + str(y))
+		page_html = site.read()
+		site.close()
+		page_soup = soup(page_html, "html.parser")
+		books = page_soup.findAll("div", {"class":"col-lg-8 product-info-listView"})
+		for i in range(0,20):
+			print(t_name)
+			book_name = books[i].find("a")
+			book_ISBN = getISBN(url,i, y)
+			book_authors = books[i].findAll("div", {"class":"contributors"})
+			book_price = books[i].find("a", {"class":"current"})
+			book_publisher = getPublisher(url,i, y)
+			name = book_name.text.replace("'", "")
+			author = book_authors[0].a.text
+			ISBN = book_ISBN.strip()[10:]
+			price = book_price.text		
+			#Query -> add book to Allbooks table
+			addbook_query = "INSERT INTO Booklist(Title, Author, Publisher, ISBN, Genre, Price, Site, Count) VALUES ('%s', '%s', '%s','%s', '%s', '%s', 'barnesandnoble', '100')" %(name, author, book_publisher.replace("'", ""), ISBN,str(genre_type),price)
+			i+1
+			try:
+				x.execute(addbook_query)
+				time.sleep(1)
+				print(book_name.text + " by " + book_authors[0].a.text + ", ISBN " + book_ISBN.strip()[10:] + " Price: " + price + " Genre: "+genre_type)
+				hit=hit+1
+			except Exception:
+				print("\n prob already in \n\n")
+				print(addbook_query)
+				print('\n')
+				traceback.print_exc()
+				print('\n')
+				miss=miss+1
+				continue
+	#commit all to DB
+	conn.commit()
+	print("miss: "+ str(miss))
+	print('\n')
+	print("hit: " + str(hit))
 
+thread1 = threading.Thread(target=threadInsert, args=('https://www.barnesandnoble.com/b/books/music-film-performing-arts/_/N-1fZ29Z8q8Zzzc?Nrpp=20&Ns=P_Sales_Rank&page=', 'MUSIC,FILM, AND PERFMORMING ARTS', 'thread1'))
+thread2 = threading.Thread(target=threadInsert, args=('https://www.barnesandnoble.com/b/books/medicine-nursing/_/N-1fZ29Z8q8Z167w?Nrpp=20&Ns=P_Sales_Rank&page=', 'MEDICINE AND NURSING', 'thread2'))
+thread1.start()
+thread2.start()
 
-
-miss = 0
-hit = 0
-
-
-for y in range(1,6):
-	site = uReq('https://www.barnesandnoble.com/b/books/history/_/N-1fZ29Z8q8Z11km?Nrpp=20&Ns=P_Sales_Rank&page=' + str(y))
-	page_html = site.read()
-	site.close()
-	page_soup = soup(page_html, "html.parser")
-	books = page_soup.findAll("div", {"class":"col-lg-8 product-info-listView"})
-	for i in range(0,20):
-		book_name = books[i].find("a")
-		book_ISBN = getISBN(i, y)
-		book_authors = books[i].findAll("div", {"class":"contributors"})
-		book_price = books[i].find("a", {"class":"current"})
-		book_publisher = getPublisher(i, y)
-		name = book_name.text.replace("'", "")
-		author = book_authors[0].a.text
-		ISBN = book_ISBN.strip()[10:]
-		price = book_price.text		
-		#Query -> add book to Allbooks table
-		addbook_query = "INSERT INTO Booklist(Title, Author, Publisher, ISBN, Genre, Price, Site, Count) VALUES ('%s', '%s', '%s','%s', 'HISTORY', '%s', 'barnesandnoble', '100')" %(name, author, book_publisher.replace("'", ""), ISBN, price)
-		i+1
-		try:
-			x.execute(addbook_query)
-			print(book_name.text + " by " + book_authors[0].a.text + ", ISBN " + book_ISBN.strip()[10:] + " Price: " + price)
-			hit=hit+1
-		except Exception:
-			print("\n prob already in \n\n")
-			print(addbook_query)
-			print('\n')
-			traceback.print_exc()
-			print('\n')
-			miss=miss+1
-			continue
-
-
-
-#commit all to DB
-conn.commit()
-print("miss: "+ str(miss))
-print('\n')
-print("hit: " + str(hit))
 
 '''
 ----------------------------------------------------------------------------------------------------------------------------
@@ -135,5 +133,23 @@ https://www.barnesandnoble.com/b/nook-books/philosophy/_/N-1fZ8qaZ1fe7?Nrpp=20&N
 
 HISTORY
 https://www.barnesandnoble.com/b/books/history/_/N-1fZ29Z8q8Z11km?Nrpp=20&Ns=P_Sales_Rank&page=
+
+PETS
+https://www.barnesandnoble.com/b/books/pets/_/N-1fZ29Z8q8Z1fjz?Nrpp=20&Ns=P_Sales_Rank&page=
+
+RELIGION:
+https://www.barnesandnoble.com/b/books/religion/_/N-1fZ29Z8q8Z17d6?Nrpp=20&Ns=P_Sales_Rank&page=
+
+NATURE
+https://www.barnesandnoble.com/b/books/nature/_/N-1fZ29Z8q8Z16i5?Nrpp=20&Ns=P_Sales_Rank&page=
+
+LAW
+https://www.barnesandnoble.com/b/books/law/_/N-1fZ29Z8q8Z1f68?Nrpp=20&Ns=P_Sales_Rank&page=
+
+MUSIC,FILM, AND PERFMORMING ART
+https://www.barnesandnoble.com/b/books/music-film-performing-arts/_/N-1fZ29Z8q8Zzzc?Nrpp=20&Ns=P_Sales_Rank&page=
+
+MEDICINE AND NURSING
+https://www.barnesandnoble.com/b/books/medicine-nursing/_/N-1fZ29Z8q8Z167w?Nrpp=20&Ns=P_Sales_Rank&page=
 '''
 
