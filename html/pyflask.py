@@ -28,7 +28,7 @@ def signUp():
 	new_user__query = "INSERT INTO Users (Name, Username, Password) Values ('%s', '%s', '%s')" % (name, username, password)
 	try:
 		x.execute(new_user__query)
-		time.sleep(2)
+		#time.sleep(2)
 		conn.commit()
 		return redirect('http://ec2-18-220-2-41.us-east-2.compute.amazonaws.com/')
 	except Exception:
@@ -46,11 +46,14 @@ def login():
 	login_query = "Select * from Users where Username='%s'" % (index_username)
 	#print (login_query)
 	x.execute(login_query)
-	time.sleep(2)
+	#time.sleep(2)
 	data_line = x.fetchone()
 	if(data_line is not None and data_line[1] == index_username and data_line[2] == index_password):
 		user = data_line[0]
-		return render_template("welcome.html", user=user)
+		table_query = "SELECT * FROM Booklist LIMIT 50"
+		x.execute(table_query)
+		data = x.fetchall()
+		return render_template("welcome.html", user=user, data=data)
 	return "<h2> unsuccessful login, password dont match or user does not exist!</h2>"
 	
 	
