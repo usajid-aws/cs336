@@ -18,7 +18,7 @@
         <div class="has-text-centered">
           <p>Welcome, {{ user }}!</p>
           </br>
-          <table border="1" cellpadding="5" cellspacing="5">
+          <table border="1" cellpadding="10" cellspacing="5">
             <td class="has-text-centered has-text-weight-bold">Title</td>
             <td class="has-text-centered has-text-weight-bold">Author</td>
             <td class="has-text-centered has-text-weight-bold">Publisher</td>
@@ -26,7 +26,7 @@
             <td class="has-text-centered has-text-weight-bold">Genre</td>
             <td class="has-text-centered has-text-weight-bold">Price</td>
             <td class="has-text-centered has-text-weight-bold">Bookstore</td>
-            <td class="has-text-centered has-text-weight-bold">Quantity Available</td>
+            <td class="has-text-centered has-text-weight-bold">Quantity Desired</td>
             <td class="has-text-centered has-text-weight-bold">Add to Cart</td>
             {% for item in data %}
               <tr>
@@ -37,7 +37,7 @@
                 <td>{{item[4]}}</td>
                 <td>{{item[5]}}</td>
                 <td>{{item[6]}}</td>
-                <td>{{item[7]}}</td>
+                <td><input class="input" type="text" placeholder="#"></td>
                 <td><input class="button is-black" type="submit" value="Add to Cart"></td>
               </tr>
             {% endfor %}
