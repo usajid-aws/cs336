@@ -17,6 +17,20 @@
       <form action="/login" method="post">
         <div class="has-text-centered">
           <p>Welcome, {{ user }}!</p>
+          </br>
+          <table border="1" cellpadding="5" cellspacing="5">
+            {% for item in data %}
+              <tr>
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <td>{{item[4]}}</td>
+                <td>{{item[5]}}</td>
+                <td>{{item[6]}}</td>
+                <td>{{item[7]}}</td>
+              </tr>
+            {% endfor %}
         </div>
     </form>
     </div>
