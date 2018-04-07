@@ -64,12 +64,13 @@ def login():
 @app.route("/addToCart", methods=['POST'])
 def addToCart():
         index_item = str(request.form.get('item'))
-        y = index_item.split(",")
+        #print(index_item)
+        y = index_item.split("\', ")
         title = y[0]
         title = title.replace("(", "")
         title = title.strip('\'')
         author = y[1]
-        author = author.strip(' ')
+        author = author.strip()
         author = author.strip('\'')
         return render_template("addtocart.html", title=title, author=author, item=index_item)
 
@@ -78,29 +79,98 @@ def addingToCart():
         qty = request.form.get('quantity')
         name = request.cookies.get('user')
         index_item = str(request.form.get('item'))
-        y = index_item.split(",")
+        y = index_item.split("\', ")
         isbn = y[3]
         isbn = isbn.replace("'", "")
         isbn = isbn.strip()
         site = y[6]
         site = site.replace("'", "")
         site = site.strip()
-        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
+, db='Books')
         #database cursor
         x = conn.cursor()
-        new_user__query = "INSERT INTO Cart (Username, ISBN, Site, qtyDesired) Values ('%s', '%s', '%s', '%s')" % (name, isbn, site, qty)
-        try:
-                x.execute(new_user__query)
+        check_query = "SELECT * FROM Cart WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (name, isbn, site)
+        x.execute(check_query)
+        conn.commit()
+        data = x.fetchone()
+        num = y[7]
+        z = num.split(",")
+        available = z[1]
+        available = available.replace(")","")
+        available = available.replace("'", "")
+        available = available.strip()
+        available = available.strip('L')
+        if data is not None:
+                if int(qty) + int(data[3]) <= int(available):
+                        update_cart_query = "UPDATE Cart SET qtyDesired = '%s' WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (str(int(qty) + int(data[3])), name, isbn, site)
+                        x.execute(update_cart_query)
+                        conn.commit()
+                show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+                x.execute(show_cart_query)
+                conn.commit()
+                data = x.fetchall()
+                return render_template("cart.html", user=name, data=data)
+        new_cart_query = "INSERT INTO Cart (Username, ISBN, Site, qtyDesired) Values ('%s', '%s', '%s', '%s')" % (name, isbn, site, qty)
+        if int(available) >= int(qty):
+                x.execute(new_cart_query)
                 #time.sleep(2)
                 #print(new_user__query)
                 conn.commit()
-                return "<h2>"+isbn+" "+site+" "+qty+" "+name+"</h2>"
-        except Exception:
-                #print ("\n User wasn't add \n") #User probably already exists, will deal with this later
-                traceback.print_exc()
-                #print ("\n \n")
-                #print(new_user__query)
-                return "<h2>error!</h2>"
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        x.execute(show_cart_query)
+        conn.commit()
+        data = x.fetchall()
+        return render_template("cart.html", data=data)
+        
+@app.route("/deleteFromCart", methods=['POST'])
+def deleteFromCart():
+        index_item = str(request.form.get('item'))
+        name = request.cookies.get('user')
+        y = index_item.split("\', ")
+        isbn = y[1]
+        isbn = isbn.replace("'", "")
+        isbn = isbn.strip()
+        site = y[2]
+        site = site.replace("'", "")
+        site = site.strip()
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
+, db='Books')
+        #database cursor
+        x = conn.cursor()
+        delete_query = "DELETE FROM Cart WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (name, isbn, site)
+        x.execute(delete_query)
+        conn.commit()
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        x.execute(show_cart_query)
+        conn.commit()
+        data = x.fetchall()
+        return render_template("cart.html", data=data)
+
+@app.route("/updateQuantity", methods=['POST'])
+def updateQuantity():
+        qty = request.form.get('quantity')
+        index_item = str(request.form.get('item'))
+        name = request.cookies.get('user')
+        y = index_item.split("\', ")
+        isbn = y[1]
+        isbn = isbn.replace("'", "")
+        isbn = isbn.strip()
+        site = y[2]
+        site = site.replace("'", "")
+        site = site.strip()
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
+, db='Books')
+        #database cursor
+        x = conn.cursor()
+        update_query = "UPDATE Cart SET qtyDesired = '%s' WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (qty, name, isbn, site)
+        x.execute(update_query)
+        conn.commit()
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        x.execute(show_cart_query)
+        conn.commit()
+        data = x.fetchall()
+        return render_template("cart.html", data=data)
 
 if __name__ == "__main__":
         app.run(debug=True)
