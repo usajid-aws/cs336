@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+      <!--form action="/addToCart" method="post">
+        <div class="has-text-centered">
+          <p>You added {{ index_item }} to your cart!</p>
+        </div>
+    </form-->
+      <form action="/addingToCart" method="post">
+      <div class="has-text-centered">
+        <p>You are adding {{ title }} by {{ author }} to your cart! How many copies would you like?</p>
+        <div class="control">
+          <div class="columns is-centered">
+            <div class="column is-one-quarter">
+              </br>
+              <input class="input" name="quantity" placeholder="Enter number here">
+              <div class="has-text-centered">
+                </br>
+                <input class="hidden" name="item" value="{{item}}" style="display: none;">
+                <input class="button is-black" type="submit" value="Add to Cart">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+  </section>
+  </body>
+</html>
