@@ -65,10 +65,6 @@ def login():
 def addToCart():
         index_item = str(request.form.get('item'))
         y = index_item.split(",")
-        isbn = y[3]
-        isbn = isbn.replace("'", "")
-        site = y[6]
-        site = site.replace("'", "")
         title = y[0]
         title = title.replace("(", "")
         title = title.strip('\'')
@@ -85,9 +81,26 @@ def addingToCart():
         y = index_item.split(",")
         isbn = y[3]
         isbn = isbn.replace("'", "")
+        isbn = isbn.strip()
         site = y[6]
         site = site.replace("'", "")
-        return "<h2>"+isbn+" "+site+" "+qty+" "+name+"</h2>"
+        site = site.strip()
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
+        #database cursor
+        x = conn.cursor()
+        new_user__query = "INSERT INTO Cart (Username, ISBN, Site, qtyDesired) Values ('%s', '%s', '%s', '%s')" % (name, isbn, site, qty)
+        try:
+                x.execute(new_user__query)
+                #time.sleep(2)
+                #print(new_user__query)
+                conn.commit()
+                return "<h2>"+isbn+" "+site+" "+qty+" "+name+"</h2>"
+        except Exception:
+                #print ("\n User wasn't add \n") #User probably already exists, will deal with this later
+                traceback.print_exc()
+                #print ("\n \n")
+                #print(new_user__query)
+                return "<h2>error!</h2>"
 
 if __name__ == "__main__":
         app.run(debug=True)
