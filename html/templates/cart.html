@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+        <div class="has-text-centered">
+          <h1 class="title">Cart</h1>
+          <table class="table">
+            <td class="has-text-centered has-text-weight-bold">Title</td>
+            <td class="has-text-centered has-text-weight-bold">Author</td>
+            <td class="has-text-centered has-text-weight-bold">ISBN</td>
+            <td class="has-text-centered has-text-weight-bold">Price</td>
+            <td class="has-text-centered has-text-weight-bold">Bookstore</td>
+            <td class="has-text-centered has-text-weight-bold">Quantity</td>
+            <td class="has-text-centered has-text-weight-bold">Remove Item</td>
+            <td class="has-text-centered has-text-weight-bold">New Quantity</td>
+            <td class="has-text-centered has-text-weight-bold">Change Quantity</td>
+            {% for item in data %}
+              <tr>
+                <form method="post" action="/deleteFromCart">
+                <td>{{item[4]}}</td>
+                <td>{{item[5]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[9]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <input class="hidden" name="item" value="{{item}}" style="display: none;">
+                <td><input class="button is-black" type="submit" value="Remove Item"></td>
+                </form>
+                <form method="post" action="/updateQuantity">
+                <td><input class="input" name="quantity"></td>
+                <input class="hidden" name="item" value="{{item}}" style="display: none">
+                <td><input class="button is-black" type="submit" value="Change Quantity"></td>
+                </form>
+              </tr>
+            {% endfor %}
+        </div>
+    </div>
+  </section>
+  </body>
+</html>
