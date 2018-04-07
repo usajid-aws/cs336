@@ -5,6 +5,8 @@ app=Flask(__name__)
 
 conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
 
+orderid = 1
+
 @app.route("/")
 def index():
         return render_template("index.html")
@@ -86,8 +88,7 @@ def addingToCart():
         site = y[6]
         site = site.replace("'", "")
         site = site.strip()
-        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
-, db='Books')
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
         #database cursor
         x = conn.cursor()
         check_query = "SELECT * FROM Cart WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (name, isbn, site)
@@ -106,7 +107,7 @@ def addingToCart():
                         update_cart_query = "UPDATE Cart SET qtyDesired = '%s' WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (str(int(qty) + int(data[3])), name, isbn, site)
                         x.execute(update_cart_query)
                         conn.commit()
-                show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+                show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site AND Username = '%s'" %(name)
                 x.execute(show_cart_query)
                 conn.commit()
                 data = x.fetchall()
@@ -117,7 +118,7 @@ def addingToCart():
                 #time.sleep(2)
                 #print(new_user__query)
                 conn.commit()
-        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site AND Username = '%s'" %(name)
         x.execute(show_cart_query)
         conn.commit()
         data = x.fetchall()
@@ -134,14 +135,13 @@ def deleteFromCart():
         site = y[2]
         site = site.replace("'", "")
         site = site.strip()
-        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
-, db='Books')
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
         #database cursor
         x = conn.cursor()
         delete_query = "DELETE FROM Cart WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (name, isbn, site)
         x.execute(delete_query)
         conn.commit()
-        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site AND Username = '%s'" %(name)
         x.execute(show_cart_query)
         conn.commit()
         data = x.fetchall()
@@ -159,18 +159,29 @@ def updateQuantity():
         site = y[2]
         site = site.replace("'", "")
         site = site.strip()
-        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord'
-, db='Books')
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
         #database cursor
         x = conn.cursor()
         update_query = "UPDATE Cart SET qtyDesired = '%s' WHERE Username = '%s' AND ISBN = '%s' AND Site = '%s'" % (qty, name, isbn, site)
         x.execute(update_query)
         conn.commit()
-        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site"
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site AND Username = '%s'" %(name)
         x.execute(show_cart_query)
         conn.commit()
         data = x.fetchall()
         return render_template("cart.html", data=data)
+
+@app.route("/checkout", methods=['POST'])
+def checkout():
+        name = request.cookies.get('user')
+        conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
+        #database cursor
+        x = conn.cursor()
+        show_cart_query = "SELECT * FROM Cart INNER JOIN allBooks WHERE Cart.ISBN = allBooks.ISBN AND Cart.Site = allBooks.Site AND Username = '%s'" %(name)
+        x.execute(show_cart_query)
+        conn.commit()
+        data = x.fetchall()
+        return render_template("checkout.html", data=data)
 
 if __name__ == "__main__":
         app.run(debug=True)
