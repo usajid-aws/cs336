@@ -14,11 +14,10 @@
         BookHero
       </h1>
       <hr>
-      <form action="/login" method="post">
         <div class="has-text-centered">
           <p>Welcome, {{ user }}!</p>
           </br>
-          <table border="1" cellpadding="10" cellspacing="5">
+          <table class="table">
             <td class="has-text-centered has-text-weight-bold">Title</td>
             <td class="has-text-centered has-text-weight-bold">Author</td>
             <td class="has-text-centered has-text-weight-bold">Publisher</td>
@@ -26,10 +25,10 @@
             <td class="has-text-centered has-text-weight-bold">Genre</td>
             <td class="has-text-centered has-text-weight-bold">Price</td>
             <td class="has-text-centered has-text-weight-bold">Bookstore</td>
-            <td class="has-text-centered has-text-weight-bold">Quantity Desired</td>
             <td class="has-text-centered has-text-weight-bold">Add to Cart</td>
             {% for item in data %}
               <tr>
+                <form method="post" action="/addToCart">
                 <td>{{item[0]}}</td>
                 <td>{{item[1]}}</td>
                 <td>{{item[2]}}</td>
@@ -37,12 +36,12 @@
                 <td>{{item[4]}}</td>
                 <td>{{item[5]}}</td>
                 <td>{{item[6]}}</td>
-                <td><input class="input" type="text" placeholder="#"></td>
+                <input class="hidden" name="item" value="{{item}}" style="display: none;">
                 <td><input class="button is-black" type="submit" value="Add to Cart"></td>
-              </tr>
+                </form>
+              </itr>
             {% endfor %}
         </div>
-    </form>
     </div>
   </section>
   </body>
