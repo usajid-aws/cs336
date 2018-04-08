@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cart</title>
+    <title>Order Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
@@ -14,7 +14,30 @@
         BookHero
       </h1>
       <hr>
-        <div class="has-text-centered">
+      <div class="field is-grouped is-pulled-right">
+        <p class="control">
+          <form method="post" action="/cart">
+            <input class="button is-black is-medium" type="submit" value="Cart">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/books">
+            <input class="button is-black is-medium" type="submit" value="Books">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/search">
+            <input class="button is-black is-medium" type="submit" value="Search">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/logout">
+            <input class="button is-black is-medium" type="submit" value="Logout">
+          </form>
+        </p>
+      </div>
+      </br></br></br>
+        <div class="container has-text-centered">
           <h1 class="title">Order Dashboard</h1>
           <table class="table is-fullwidth">
             <td class="has-text-weight-bold">Order ID</td>
@@ -29,6 +52,7 @@
                 <td>{{item[1]}}</td>
                 <td>{{item[2]}}</td>
                 <td>{{item[3]}}</td>
+                 <input class="hidden" name="item" value="{{item}}" style="display: none;">
                 <td><input class="button is-black" type="submit" value="Order Details"></td>
                 </form>
               </tr>
