@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+      <div class="field is-grouped is-pulled-right">
+        <p class="control">
+          <form method="post" action="/orderDashboard">
+            <input class="button is-black is-medium" type="submit" value="Order Dashboard">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/cart">
+            <input class="button is-black is-medium" type="submit" value="Cart">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/books">
+            <input class="button is-black is-medium" type="submit" value="Books">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/logout">
+            <input class="button is-black is-medium" type="submit" value="Logout">
+          </form>
+        </p>
+      </div>
+        </br></br></br>
+        <div class="has-text-centered">
+          <form method="post" action="/search">
+            <input class="button is-black is-large" type="submit" value="Search">
+          </form>
+          </br>
+          <h1 class="title">Search Results</h1>
+          <table class="table">
+            <td class="has-text-weight-bold">Title</td>
+            <td class="has-text-weight-bold">Author</td>
+            <td class="has-text-weight-bold">Publisher</td>
+            <td class="has-text-weight-bold">ISBN</td>
+            <td class="has-text-weight-bold">Genre</td>
+            <td class="has-text-weight-bold">Price</td>
+            <td class="has-text-weight-bold">Bookstore</td>
+            <td class="has-text-weight-bold">Add to Cart</td>
+            {% for item in data %}
+              <tr>
+                <form method="post" action="/addToCart">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <td>{{item[4]}}</td>
+                <td>{{item[5]}}</td>
+                <td>{{item[6]}}</td>
+                <input class="hidden" name="item" value="{{item}}" style="display: none;">
+                <td><input class="button is-black" type="submit" value="Add to Cart"></td>
+                </form>
+              </tr>
+            {% endfor %}
+          </table>
+      </div>
+      <div class="field is-grouped is-pulled-right">
+        <p class="control">
+        <p class="control">
+          <form method="post" action="/nextResult">
+            <input class="button is-black is-medium" type="submit" value="Next">
+          </form>
+        </p>
+      </div>
+    </br>
+    </div>
+  </section>
+  </body>
+</html>
