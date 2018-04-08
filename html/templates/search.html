@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+    <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+      <div class="has-text-centered">
+        <h1 class="title">Search</h1>
+      </div>
+      </br>
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <form action="/results" method="post">
+          <div class="field has-addons">
+            <p class="control">
+              <span class="select">
+                <select name="category">
+                  <option>Title</option>
+                  <option>Author</option>
+                  <option>Publisher</option>
+                  <option>ISBN</option>
+                  <option>Genre</option>
+                </select>
+              </span>
+            </p>
+            <p class="control is-expanded">
+              <input class="input" name="value" type="text" placeholder="Enter search value">
+            </p>
+          </div>
+          <label class="label">Filter by Price</label>
+          <div class="control">
+            <div class="select">
+              <select name="price">
+                <option>Select Option</option>
+                <option>Low to High</option>
+                <option>High to Low</option>
+              </select>
+            </div>
+          </div>
+          </br>
+          <label class="label">Filter by Bookstore</label>
+          <div class="control">
+            <div class="select">
+              <select name="site">
+                <option>Select Option</option>
+                <option>Amazon</option>
+                <option>Barnes & Noble</option>
+                <option>Book Outlet</option>
+                <option>ebooks</option>
+              </select>
+            </div>
+          </div>
+          <div class="has-text-centered">
+            <input class="button is-black" type="submit" value="Submit">
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  </body>
+</html>
