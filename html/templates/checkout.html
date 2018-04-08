@@ -3,17 +3,30 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cart</title>
+    <title>Checkout</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
   <body>
-  <section class="section">
+   <section class="section">
     <div class="container">
       <h1 class="title">
         BookHero
       </h1>
       <hr>
+      <div class="is-grouped field is-pulled-right">
+        <p class="control">
+          <form method="post" action="/cart">
+            <input class="button is-black is-medium" type="submit" value="Cart">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/logout">
+            <input class="button is-black is-medium" type="submit" value="Logout">
+          </form>
+        </p>
+      </div>
+      </br></br></br>
         <div class="has-text-centered">
           <h1 class="title">Checkout</h1>
           </br>
