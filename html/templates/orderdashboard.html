@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+        <div class="has-text-centered">
+          <h1 class="title">Order Dashboard</h1>
+          <table class="table is-fullwidth">
+            <td class="has-text-weight-bold">Order ID</td>
+            <td class="has-text-weight-bold">Address</td>
+            <td class="has-text-weight-bold">Total Items</td>
+            <td class="has-text-weight-bold">Total Price</td>
+            <td class="has-text-weight-bold">Order Details</td>
+            {% for item in data %}
+              <tr>
+                <form method="post" action="/orderDetails">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <td><input class="button is-black" type="submit" value="Order Details"></td>
+                </form>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+  </section>
+  </body>
+</html>
