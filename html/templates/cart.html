@@ -14,18 +14,24 @@
         BookHero
       </h1>
       <hr>
+      <div>
+        <form method="post" action="/checkout">
+        <input class="button is-black is-medium is-pulled-right" type="submit" value="Checkout">
+        </br></br>
+        </form>
+      </div>
         <div class="has-text-centered">
           <h1 class="title">Cart</h1>
-          <table class="table">
-            <td class="has-text-centered has-text-weight-bold">Title</td>
-            <td class="has-text-centered has-text-weight-bold">Author</td>
-            <td class="has-text-centered has-text-weight-bold">ISBN</td>
-            <td class="has-text-centered has-text-weight-bold">Price</td>
-            <td class="has-text-centered has-text-weight-bold">Bookstore</td>
-            <td class="has-text-centered has-text-weight-bold">Quantity</td>
-            <td class="has-text-centered has-text-weight-bold">Remove Item</td>
-            <td class="has-text-centered has-text-weight-bold">New Quantity</td>
-            <td class="has-text-centered has-text-weight-bold">Change Quantity</td>
+          <table class="table is-fullwidth">
+            <td class="has-text-weight-bold">Title</td>
+            <td class="has-text-weight-bold">Author</td>
+            <td class="has-text-weight-bold">ISBN</td>
+            <td class="has-text-weight-bold">Price</td>
+            <td class="has-text-weight-bold">Bookstore</td>
+            <td class="has-text-weight-bold">Quantity</td>
+            <td class="has-text-weight-bold">Remove Item</td>
+            <td class="has-text-weight-bold">New Quantity</td>
+            <td class="has-text-weight-bold">Change Quantity</td>
             {% for item in data %}
               <tr>
                 <form method="post" action="/deleteFromCart">
@@ -45,6 +51,7 @@
                 </form>
               </tr>
             {% endfor %}
+          </table>
         </div>
     </div>
   </section>
