@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome</title>
+    <title>Books</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
@@ -14,9 +14,38 @@
         BookHero
       </h1>
       <hr>
+      <div class="field is-grouped is-pulled-right">
+        <p class="control">
+          <form method="post" action="/orderDashboard">
+            <input class="button is-black is-medium" type="submit" value="Order Dashboard">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/cart">
+            <input class="button is-black is-medium" type="submit" value="Cart">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/logout">
+            <input class="button is-black is-medium" type="submit" value="Logout">
+          </form>
+        </p>
+      </div>
+        </br></br></br>
         <div class="has-text-centered">
-          <!--p>Welcome, {{ user }}!</p-->
+          <form method="post" action="/search">
+            <input class="button is-black is-large" type="submit" value="Search">
+          </form>
           </br>
+          <form method="post" action="/patternOne">
+            <input class="button" type="submit" value="Click here to verify that the average item price is less than $20!">
+          </form>
+          </br>
+          <form method="post" action="/patternTwo">
+            <input class="button" type="submit" value="Click here to verify genre with the most books!">
+          </form>
+          </br>
+          <h1 class="title">Books</h1>
           <table class="table">
             <td class="has-text-weight-bold">Title</td>
             <td class="has-text-weight-bold">Author</td>
@@ -27,7 +56,7 @@
             <td class="has-text-weight-bold">Bookstore</td>
             <td class="has-text-weight-bold">Add to Cart</td>
             {% for item in data %}
-              <tr>
+             <tr>
                 <form method="post" action="/addToCart">
                 <td>{{item[0]}}</td>
                 <td>{{item[1]}}</td>
@@ -43,6 +72,19 @@
             {% endfor %}
           </table>
         </div>
+      <div class="field is-grouped is-pulled-right">
+        <p class="control">
+          <form method="post" action="/previous">
+            <input class="button is-black is-medium" type="submit" value="Previous">
+          </form>
+        </p>
+        <p class="control">
+          <form method="post" action="/next">
+            <input class="button is-black is-medium" type="submit" value="Next">
+          </form>
+        </p>
+      </div>
+    </br>
     </div>
   </section>
   </body>
