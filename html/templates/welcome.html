@@ -15,17 +15,17 @@
       </h1>
       <hr>
         <div class="has-text-centered">
-          <p>Welcome, {{ user }}!</p>
+          <!--p>Welcome, {{ user }}!</p-->
           </br>
           <table class="table">
-            <td class="has-text-centered has-text-weight-bold">Title</td>
-            <td class="has-text-centered has-text-weight-bold">Author</td>
-            <td class="has-text-centered has-text-weight-bold">Publisher</td>
-            <td class="has-text-centered has-text-weight-bold">ISBN</td>
-            <td class="has-text-centered has-text-weight-bold">Genre</td>
-            <td class="has-text-centered has-text-weight-bold">Price</td>
-            <td class="has-text-centered has-text-weight-bold">Bookstore</td>
-            <td class="has-text-centered has-text-weight-bold">Add to Cart</td>
+            <td class="has-text-weight-bold">Title</td>
+            <td class="has-text-weight-bold">Author</td>
+            <td class="has-text-weight-bold">Publisher</td>
+            <td class="has-text-weight-bold">ISBN</td>
+            <td class="has-text-weight-bold">Genre</td>
+            <td class="has-text-weight-bold">Price</td>
+            <td class="has-text-weight-bold">Bookstore</td>
+            <td class="has-text-weight-bold">Add to Cart</td>
             {% for item in data %}
               <tr>
                 <form method="post" action="/addToCart">
@@ -41,6 +41,7 @@
                 </form>
               </tr>
             {% endfor %}
+          </table>
         </div>
     </div>
   </section>
