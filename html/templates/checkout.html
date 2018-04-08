@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        BookHero
+      </h1>
+      <hr>
+        <div class="has-text-centered">
+          <h1 class="title">Checkout</h1>
+          </br>
+          <h2 class="subtitle is-4">Your Cart</h2>
+          <table class="table is-fullwidth">
+            <td class="has-text-weight-bold">Title</td>
+            <td class="has-text-weight-bold">Author</td>
+            <td class="has-text-weight-bold">ISBN</td>
+            <td class="has-text-weight-bold">Price</td>
+            <td class="has-text-weight-bold">Bookstore</td>
+            <td class="has-text-weight-bold">Quantity</td>
+            {% for item in data %}
+              <tr>
+                <td>{{item[4]}}</td>
+                <td>{{item[5]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[9]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+              </tr>
+            {% endfor %}
+          </table>
+          <h2 class="subtitle is-5">Your subtotal is: ${{ tot }}</h2>
+          <form action="/placeOrder" method="post">
+            <div class="columns is-centered">
+              <div class="column is-one-third">
+                <div class="field">
+                  <label class="label">Shipping Address</label>
+                    <div class="control">
+                      <input class="input" name="address" placeholder="Enter address here">
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="has-text-centered">
+              <input class="button is-black" type="submit" value="Place Order">
+            </div>
+          </form>
+        </div>
+    </div>
+  </section>
+  </body>
+</html>
