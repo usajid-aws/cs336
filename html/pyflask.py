@@ -162,7 +162,7 @@ def results():
                                 resp.set_cookie('retrows', str(numrows))
                                 resp.set_cookie('query', table_query)
                                 return resp
-                 else:
+                else:
                         if site == 'Select Option':
                                 table_query = "SELECT * FROM allBooks ORDER BY CAST(Price AS DECIMAL(10,2)) DESC LIMIT 75"
                                 x.execute(table_query)
