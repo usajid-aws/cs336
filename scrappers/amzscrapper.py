@@ -12,8 +12,8 @@ from urllib.request import urlopen as uReq, Request
 from bs4 import BeautifulSoup as soup
  
 
-conn = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
-conn2  = MySQLdb.connect(host='projectdb.cehud0y2r1tl.us-east-2.rds.amazonaws.com', user='root', passwd='passWord', db='Books')
+conn = MySQLdb.connect(host='', user='', passwd='', db='Books')
+conn2  = MySQLdb.connect(host='m', user='', passwd='', db='Books')
 x = conn.cursor()
 x2 = conn2.cursor()
 
