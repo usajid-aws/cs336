@@ -146,10 +146,11 @@ https://www.barnesandnoble.com/b/books/nature/_/N-1fZ29Z8q8Z16i5?Nrpp=20&Ns=P_Sa
 LAW
 https://www.barnesandnoble.com/b/books/law/_/N-1fZ29Z8q8Z1f68?Nrpp=20&Ns=P_Sales_Rank&page=
 
-MUSIC,FILM, AND PERFMORMING ART
+MUSIC,FILM, AND PERFMORMING ARTS
 https://www.barnesandnoble.com/b/books/music-film-performing-arts/_/N-1fZ29Z8q8Zzzc?Nrpp=20&Ns=P_Sales_Rank&page=
 
 MEDICINE AND NURSING
 https://www.barnesandnoble.com/b/books/medicine-nursing/_/N-1fZ29Z8q8Z167w?Nrpp=20&Ns=P_Sales_Rank&page=
+
 '''
 
